@@ -23,4 +23,16 @@ public protocol URLRequestBuilder {
     /// - Parameter path: The path to apply (e.g., "/v1/users").
     /// - Returns: The builder instance to allow fluent chaining.
     func setPath(_ path: String) -> RequestBuilder
+
+    /// Sets the query items to be appended as URL query parameters.
+    /// - Parameter items: The list of `URLQueryItem` to include in the request URL.
+    /// - Returns: The builder instance to allow fluent chaining.
+    func setQueryItems(_ items: [URLQueryItem]) -> RequestBuilder
+
+    /// Adds a single query item to the request URL.
+    /// - Parameters:
+    ///   - name: The name of the query parameter.
+    ///   - value: The value of the query parameter. If `nil`, the item is added without a value.
+    /// - Returns: The builder instance to allow fluent chaining.
+    func addQueryItem(name: String, value: String?) -> RequestBuilder
 }

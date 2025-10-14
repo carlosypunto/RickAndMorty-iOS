@@ -35,4 +35,42 @@ struct DefaultRequestBuilderTests {
         builder.setPath("second")
         #expect(builder.request.url == baseURL.appending(path: "second"))
     }
+
+    @Test func test_request_adding_one_queryitem() {
+        let builder = RequestBuilder(base: baseURL)
+
+        builder.addQueryItem(name: "first", value: "first_value")
+        #expect(builder.request.url!.absoluteString.hasSuffix("?first=first_value"))
+    }
+
+    @Test func test_request_adding_one_queryitem_withoutValue() {
+        let builder = RequestBuilder(base: baseURL)
+
+        builder.addQueryItem(name: "first", value: nil)
+        #expect(builder.request.url!.absoluteString.hasSuffix("?first"))
+    }
+
+    @Test func test_request_adding_several_queryitems() {
+        let builder = RequestBuilder(base: baseURL)
+
+        builder.addQueryItem(name: "first", value: "first_value")
+        builder.addQueryItem(name: "second", value: "second_value")
+
+        let requestUrlString = builder.request.url!.absoluteString
+        let queryItemsParts = requestUrlString.split(separator: "?")[1]
+            .split(separator: "&")
+            .map(String.init)
+
+        #expect(queryItemsParts.contains("first=first_value") && queryItemsParts.contains("second=second_value"))
+    }
+
+    @Test func test_request_adding_two_queryitem_withoutValue() {
+        let builder = RequestBuilder(base: baseURL)
+
+        builder.addQueryItem(name: "first", value: nil)
+        builder.addQueryItem(name: "second", value: nil)
+        let requestUrlString = builder.request.url!.absoluteString
+
+        #expect(requestUrlString.hasSuffix("?first&second") || requestUrlString.hasSuffix("?second&first"))
+    }
 }

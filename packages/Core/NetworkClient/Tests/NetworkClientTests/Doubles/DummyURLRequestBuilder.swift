@@ -15,4 +15,13 @@ struct DummyURLRequestBuilder: URLRequestBuilder {
     func setPath(_ path: String) -> RequestBuilder {
         fatalError("Not required in tests")
     }
+
+    func setQueryItems(_ items: [URLQueryItem]) -> RequestBuilder {
+        fatalError("Not required in tests")
+    }
+
+    func addQueryItem(name: String, value: String?) -> RequestBuilder {
+        fatalError("Not required in tests")
+    }
+
 }
