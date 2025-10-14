@@ -11,9 +11,13 @@ let package = Package(
             targets: ["RickAndMortyServices"]
         ),
     ],
+    dependencies: [
+        .package(path: "../../Core/NetworkClient")
+    ],
     targets: [
         .target(
-            name: "RickAndMortyServices"
+            name: "RickAndMortyServices",
+            dependencies: ["NetworkClient"]
         ),
         .testTarget(
             name: "RickAndMortyServicesTests",
