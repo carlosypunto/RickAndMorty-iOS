@@ -8,14 +8,14 @@ import NetworkClient
 
 struct RickAndMortyServicesLocationsTests {
     @Test func test_getLocations_firstPage_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOLocationsJSONStubs.locationPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         _ = try! await sut.getLocations(page: 1)
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/location")
     }
 
     @Test func test_getLocations_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOLocationsJSONStubs.locationPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let page = Int.random(in: 2..<50)
         _ = try! await sut.getLocations(page: page)
@@ -23,7 +23,7 @@ struct RickAndMortyServicesLocationsTests {
     }
 
     @Test func test_getLocations_withIds_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOLocationsJSONStubs.locationListData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let ids = [Int].randomIds().sorted()
         _ = try! await sut.getLocations(withIds: ids)
@@ -32,7 +32,7 @@ struct RickAndMortyServicesLocationsTests {
     }
 
     @Test func test_getLocation_withId_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOLocationsJSONStubs.locationOneData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let id = Int.random(in: 1..<100)
         _ = try! await sut.getLocation(withId: id)

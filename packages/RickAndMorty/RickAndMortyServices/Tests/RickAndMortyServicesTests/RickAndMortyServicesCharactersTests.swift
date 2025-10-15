@@ -8,14 +8,14 @@ import NetworkClient
 
 struct RickAndMortyServicesCharactersTests {
     @Test func test_getCharacters_firstPage_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         _ = try! await sut.getCharacters(page: 1)
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character")
     }
 
     @Test func test_getCharacters_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let page = Int.random(in: 2..<50)
         _ = try! await sut.getCharacters(page: page)
@@ -24,7 +24,7 @@ struct RickAndMortyServicesCharactersTests {
     }
 
     @Test func test_getCharacters_withIds_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterListData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let ids = [Int].randomIds().sorted()
         _ = try! await sut.getCharacters(withIds: ids)
@@ -33,7 +33,7 @@ struct RickAndMortyServicesCharactersTests {
     }
 
     @Test func test_getCharacter_withId_requestUrl() async {
-        let client = NetworkClientSpy(data: Data())
+        let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterOneData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let id = Int.random(in: 1..<100)
         _ = try! await sut.getCharacter(withId: id)

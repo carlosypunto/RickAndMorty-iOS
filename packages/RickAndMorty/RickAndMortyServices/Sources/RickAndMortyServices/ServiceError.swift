@@ -6,6 +6,7 @@ import NetworkClient
 public enum ServiceError: Error {
     case notSucessfulResponse
     case notHTTPResponse
+    case decodeError
 }
 
 extension ServiceError {

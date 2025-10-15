@@ -4,11 +4,20 @@
 import Foundation
 import NetworkClient
 
-public final class RickAndMortyServicesImpl: RickAndMortyServices {
+final class RickAndMortyServicesImpl: RickAndMortyServices {
     let baseURL = URL(string: "https://rickandmortyapi.com/api")!
     let networkClient: NetworkClient
+    let decoder = JSONDecoder()
 
     public init(networkClient: NetworkClient = NetworkClientImpl()) {
         self.networkClient = networkClient
+    }
+
+    func decode<T>(_ type: T.Type, from data: Data) throws(ServiceError) -> T where T : Decodable {
+        do {
+            return try decoder.decode(type.self, from: data)
+        } catch {
+            throw ServiceError.decodeError
+        }
     }
 }

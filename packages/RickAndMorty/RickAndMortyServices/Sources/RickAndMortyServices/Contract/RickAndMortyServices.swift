@@ -3,11 +3,16 @@
 
 import Foundation
 
-public protocol RickAndMortyServices {
-    func getCharacters(page: Int) async throws -> Data
-    func getLocations(page: Int) async throws -> Data
-    func getEpisodes(page: Int) async throws -> Data
-    func getCharacter(withId id: Int) async throws -> Data
-    func getLocation(withId id: Int) async throws -> Data
-    func getEpisode(withId id: Int) async throws -> Data
+protocol RickAndMortyServices {
+    func getCharacters(page: Int) async throws(ServiceError) -> DTO.Page<DTO.Character>
+    func getCharacters(withIds ids: [Int]) async throws(ServiceError) -> [DTO.Character]
+    func getCharacter(withId id: Int) async throws(ServiceError) -> DTO.Character
+
+    func getEpisodes(page: Int) async throws(ServiceError) -> DTO.Page<DTO.Episode>
+    func getEpisodes(withIds ids: [Int]) async throws(ServiceError) -> [DTO.Episode]
+    func getEpisode(withId id: Int) async throws(ServiceError) -> DTO.Episode
+
+    func getLocations(page: Int) async throws -> DTO.Page<DTO.Location>
+    func getLocations(withIds ids: [Int]) async throws(ServiceError) -> [DTO.Location]
+    func getLocation(withId id: Int) async throws(ServiceError) -> DTO.Location
 }
