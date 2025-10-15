@@ -9,4 +9,18 @@ public struct Episode {
     let characters: [Int]
     let airDate: Date
     let created: Date
+
+    public init(
+        id: Int,
+        title: String,
+        characters: [Int],
+        airDate: Date,
+        created: Date
+    ) {
+        self.id = id
+        self.title = title
+        self.characters = characters
+        self.airDate = airDate
+        self.created = created
+    }
 }
