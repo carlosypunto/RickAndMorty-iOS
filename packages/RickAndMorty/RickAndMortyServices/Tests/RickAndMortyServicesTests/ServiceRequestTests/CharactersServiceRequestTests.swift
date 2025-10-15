@@ -6,7 +6,7 @@ import Testing
 import NetworkClient
 @testable import RickAndMortyServices
 
-struct RickAndMortyServicesCharactersTests {
+struct CharactersServiceRequestTests {
     @Test func test_getCharacters_firstPage_requestUrl() async {
         let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
@@ -19,7 +19,6 @@ struct RickAndMortyServicesCharactersTests {
         let sut = RickAndMortyServicesImpl(networkClient: client)
         let page = Int.random(in: 2..<50)
         _ = try! await sut.getCharacters(page: page)
-        #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character?page=\(page)")
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character?page=\(page)")
     }
 

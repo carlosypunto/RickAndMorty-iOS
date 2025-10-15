@@ -6,7 +6,7 @@ import Testing
 import NetworkClient
 @testable import RickAndMortyServices
 
-struct RickAndMortyServicesLocationsTests {
+struct LocationsServiceRequestTests {
     @Test func test_getLocations_firstPage_requestUrl() async {
         let client = NetworkClientSpy(data: DTOLocationsJSONStubs.locationPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
