@@ -21,6 +21,20 @@ public extension RickAndMortyServicesImpl {
         }
     }
 
+    func getLocations(withIds ids: [Int]) async throws(ServiceError) -> Data {
+        assert(!ids.isEmpty, "ids cannot be empty")
+        let builder = RequestBuilder(base: baseURL)
+        let idsString = ids.map(String.init).joined(separator: ",")
+        builder.setPath("location/\(idsString)")
+        do {
+            let (data, response) = try await networkClient.request(with: builder)
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse }
+            return data
+        } catch {
+            throw ServiceError.map(from: error)
+        }
+    }
+
     func getLocation(withId id: Int) async throws(ServiceError) -> Data {
         assert(id > 0, "id must be greater than zero")
         let builder = RequestBuilder(base: baseURL)

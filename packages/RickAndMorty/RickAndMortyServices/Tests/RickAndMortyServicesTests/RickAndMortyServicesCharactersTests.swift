@@ -20,6 +20,16 @@ struct RickAndMortyServicesCharactersTests {
         let page = Int.random(in: 2..<50)
         _ = try! await sut.getCharacters(page: page)
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character?page=\(page)")
+        #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character?page=\(page)")
+    }
+
+    @Test func test_getCharacters_withIds_requestUrl() async {
+        let client = NetworkClientSpy(data: Data())
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        let ids = [Int].randomIds().sorted()
+        _ = try! await sut.getCharacters(withIds: ids)
+        let idsString = ids.map(String.init).joined(separator: ",")
+        #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character/\(idsString)")
     }
 
     @Test func test_getCharacter_withId_requestUrl() async {

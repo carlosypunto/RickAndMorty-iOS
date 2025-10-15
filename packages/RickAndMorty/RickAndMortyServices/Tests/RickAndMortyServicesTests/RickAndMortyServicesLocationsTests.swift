@@ -22,6 +22,15 @@ struct RickAndMortyServicesLocationsTests {
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/location?page=\(page)")
     }
 
+    @Test func test_getLocations_withIds_requestUrl() async {
+        let client = NetworkClientSpy(data: Data())
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        let ids = [Int].randomIds().sorted()
+        _ = try! await sut.getLocations(withIds: ids)
+        let idsString = ids.map(String.init).joined(separator: ",")
+        #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/location/\(idsString)")
+    }
+
     @Test func test_getLocation_withId_requestUrl() async {
         let client = NetworkClientSpy(data: Data())
         let sut = RickAndMortyServicesImpl(networkClient: client)
