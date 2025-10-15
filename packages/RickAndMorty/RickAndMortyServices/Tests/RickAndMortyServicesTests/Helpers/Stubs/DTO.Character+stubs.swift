@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Carlos García Nieto. All rights reserved.
 //
 
+import Foundation
 @testable import RickAndMortyServices
 
 extension DTO.Character {
@@ -88,7 +89,7 @@ extension DTO.Character {
             "https://rickandmortyapi.com/api/episode/51",
         ],
         url: "https://rickandmortyapi.com/api/character/1",
-        created: "2017-11-04T18:48:46.250Z"
+        created: DateFormatter.iso8601Formatter.date(from: "2017-11-04T18:48:46.250Z")!
     )
 
     static let secondCharacterStub = DTO.Character(
@@ -161,6 +162,6 @@ extension DTO.Character {
             "https://rickandmortyapi.com/api/episode/51",
         ],
         url: "https://rickandmortyapi.com/api/character/2",
-        created: "2017-11-04T18:50:21.651Z"
+        created: DateFormatter.iso8601Formatter.date(from: "2017-11-04T18:50:21.651Z")!
     )
 }

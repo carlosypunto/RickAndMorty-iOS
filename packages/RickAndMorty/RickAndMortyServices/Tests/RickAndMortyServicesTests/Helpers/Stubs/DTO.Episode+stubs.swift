@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Carlos García Nieto. All rights reserved.
 //
 
+import Foundation
 @testable import RickAndMortyServices
 
 extension DTO.Episode {
@@ -45,14 +46,14 @@ extension DTO.Episode {
             "https://rickandmortyapi.com/api/character/405",
         ],
         url: "https://rickandmortyapi.com/api/episode/2",
-        created: "2017-11-10T12:56:33.916Z"
+        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T12:56:33.916Z")!
     )
 
     static let secondEpisodeStub = DTO.Episode(
-        id: 2,
-        name: "Lawnmower Dog",
-        airDate: "December 9, 2013",
-        episode: "S01E02",
+        id: 3,
+        name: "Anatomy Park",
+        airDate: "December 16, 2013",
+        episode: "S01E03",
         characters: [
             "https://rickandmortyapi.com/api/character/1",
             "https://rickandmortyapi.com/api/character/2",
@@ -74,7 +75,8 @@ extension DTO.Episode {
             "https://rickandmortyapi.com/api/character/398",
             "https://rickandmortyapi.com/api/character/405",
         ],
-        url: "https://rickandmortyapi.com/api/episode/2",
-        created: "2017-11-10T12:56:33.916Z"
+        url: "https://rickandmortyapi.com/api/episode/3",
+        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T12:56:33.916Z")!
     )
 }
+

@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Carlos García Nieto. All rights reserved.
 //
 
+import Foundation
+
 extension DTO {
     struct Episode: Codable {
         let id: Int
@@ -9,7 +11,7 @@ extension DTO {
         let episode: String
         let characters: [String]
         let url: String
-        let created: String
+        let created: Date
 
         enum CodingKeys: String, CodingKey {
             case id

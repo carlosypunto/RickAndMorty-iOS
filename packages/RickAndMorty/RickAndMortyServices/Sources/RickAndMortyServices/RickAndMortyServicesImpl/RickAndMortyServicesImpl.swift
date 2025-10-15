@@ -7,7 +7,11 @@ import NetworkClient
 final class RickAndMortyServicesImpl: RickAndMortyServices {
     let baseURL = URL(string: "https://rickandmortyapi.com/api")!
     let networkClient: NetworkClient
-    let decoder = JSONDecoder()
+    let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(.iso8601Formatter)
+        return decoder
+    }()
 
     public init(networkClient: NetworkClient = NetworkClientImpl()) {
         self.networkClient = networkClient

@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Carlos García Nieto. All rights reserved.
 //
 
+import Foundation
+
 extension DTO {
     struct Character: Codable {
         let id: Int
@@ -14,9 +16,11 @@ extension DTO {
         let image: String
         let episode: [String]
         let url: String
-        let created: String
+        let created: Date
     }
+}
 
+extension DTO.Character {
     enum Gender: String, Codable {
         case female = "Female"
         case male = "Male"
