@@ -40,7 +40,7 @@ public final class NetworkClientImpl: NetworkClient {
             }
             return (data, urlResponse)
         } catch {
-            throw error.isInternetOffline ? NetworkClientError.iternetOffline : error
+            throw error.isInternetOffline ? NetworkClientError.internetOffline : error
         }
     }
 }

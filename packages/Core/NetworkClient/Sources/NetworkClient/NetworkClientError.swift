@@ -13,5 +13,5 @@ public enum NetworkClientError: Error, LocalizedError {
     /// The response was not an `HTTPURLResponse`.
     case notHTTPResponse
     /// The device appears to be offline. This maps from `NSURLErrorNotConnectedToInternet`.
-    case iternetOffline
+    case internetOffline
 }

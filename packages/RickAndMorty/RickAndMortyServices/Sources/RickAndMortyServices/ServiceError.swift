@@ -18,7 +18,7 @@ extension ServiceError {
             switch clientError {
             case .notHTTPResponse:
                 return .notHTTPResponse
-            case .iternetOffline:
+            case .internetOffline:
                 return .offline
             }
         }
