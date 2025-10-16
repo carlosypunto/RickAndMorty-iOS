@@ -2,8 +2,8 @@
 //
 
 public struct Page<Element> {
-    let isLast: Bool
-    let elements: [Element]
+    public let isLast: Bool
+    public let elements: [Element]
 
     public init(isLast: Bool, elements: [Element]) {
         self.isLast = isLast

@@ -4,12 +4,12 @@
 import Foundation
 
 public struct Location {
-    let id: Int
-    let name: String
-    let type: String
-    let dimension: String
-    let residents: [Int]
-    let created: Date
+    public let id: Int
+    public let name: String
+    public let type: String
+    public let dimension: String
+    public let residents: [Int]
+    public let created: Date
 
     public init(
         id: Int,

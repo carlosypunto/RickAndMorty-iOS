@@ -4,18 +4,17 @@
 import Foundation
 
 public struct Character {
-    let id: Int
-    let name: String
-    let status: Status
-    let species: String
-    let type: String
-    let gender: Gender
-    let origin: Location
-    let location: Location
-    let image: String
-    let episodes: [Int]
-    let url: String
-    let created: Date
+    public let id: Int
+    public let name: String
+    public let status: Status
+    public let species: String
+    public let type: String
+    public let gender: Gender
+    public let origin: Location
+    public let location: Location
+    public let image: String
+    public let episodes: [Int]
+    public let created: Date
 
     public init(
         id: Int,
@@ -28,7 +27,6 @@ public struct Character {
         location: Location,
         image: String,
         episodes: [Int],
-        url: String,
         created: Date
     ) {
         self.id = id
@@ -41,7 +39,6 @@ public struct Character {
         self.location = location
         self.image = image
         self.episodes = episodes
-        self.url = url
         self.created = created
     }
 }
@@ -55,8 +52,8 @@ public extension Character {
     }
 
     struct Location {
-        let id: Int
-        let name: String
+        public let id: Int
+        public let name: String
 
         public init(id: Int, name: String) {
             self.id = id

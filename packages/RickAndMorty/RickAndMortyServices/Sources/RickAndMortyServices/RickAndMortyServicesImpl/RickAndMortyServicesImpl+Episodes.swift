@@ -6,7 +6,7 @@ import NetworkClient
 
 extension RickAndMortyServicesImpl {
     func getEpisodes(page: Int) async throws(ServiceError) -> DTO.Page<DTO.Episode> {
-        assert(page > 0, "page must be greater than zero")
+        guard page > 0 else { throw ServiceError.invalidParameter("page must be > 0") }
         let builder = RequestBuilder(base: baseURL)
         builder.setPath("episode")
         if page > 1 {
@@ -14,7 +14,7 @@ extension RickAndMortyServicesImpl {
         }
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
             let episodePage = try decode(DTO.Page<DTO.Episode>.self, from: data)
             return episodePage
         } catch {
@@ -23,13 +23,13 @@ extension RickAndMortyServicesImpl {
     }
 
     func getEpisodes(withIds ids: [Int]) async throws(ServiceError) -> [DTO.Episode] {
-        assert(!ids.isEmpty, "ids cannot be empty")
+        guard !ids.isEmpty else { throw ServiceError.invalidParameter("ids must not be empty") }
         let builder = RequestBuilder(base: baseURL)
         let idsString = ids.map(String.init).joined(separator: ",")
         builder.setPath("episode/\(idsString)")
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
             let episodes = try decode([DTO.Episode].self, from: data)
             return episodes
         } catch {
@@ -38,12 +38,12 @@ extension RickAndMortyServicesImpl {
     }
 
     func getEpisode(withId id: Int) async throws(ServiceError) -> DTO.Episode {
-        assert(id > 0, "id must be greater than zero")
+        guard id > 0 else { throw ServiceError.invalidParameter("id must be > 0") }
         let builder = RequestBuilder(base: baseURL)
         builder.setPath("episode/\(id)")
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
             let episode = try decode(DTO.Episode.self, from: data)
             return episode
         } catch {

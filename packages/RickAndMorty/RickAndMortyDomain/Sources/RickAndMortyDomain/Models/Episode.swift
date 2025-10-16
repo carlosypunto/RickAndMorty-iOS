@@ -4,17 +4,17 @@
 import Foundation
 
 public struct Episode {
-    let id: Int
-    let title: String
-    let characters: [Int]
-    let airDate: Date
-    let created: Date
+    public let id: Int
+    public let title: String
+    public let characters: [Int]
+    public let airDate: String
+    public let created: Date
 
     public init(
         id: Int,
         title: String,
         characters: [Int],
-        airDate: Date,
+        airDate: String,
         created: Date
     ) {
         self.id = id

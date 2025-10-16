@@ -7,6 +7,14 @@ import NetworkClient
 @testable import RickAndMortyServices
 
 struct EpisodesServiceRequestTests {
+    // make a real call
+    @Test func test_getEpisodes_firstPage_requestUrl_real() async {
+        let sut = RickAndMortyServicesImpl()
+        let salida = try! await sut.getEpisodes(page: 1)
+        print(salida.toDomain.elements)
+        #expect(salida.info.count == 51)
+    }
+
     @Test func test_getEpisodes_firstPage_requestUrl() async {
         let client = NetworkClientSpy(data: DTOEpisodesJSONStubs.episodePageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
@@ -38,5 +46,51 @@ struct EpisodesServiceRequestTests {
         _ = try! await sut.getEpisode(withId: id)
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/episode/\(id)")
 
+    }
+
+    // MARK: - bad parameters
+
+    @Test func test_getEpisodes_badParameters() async {
+        let sut = RickAndMortyServicesImpl()
+        let expectedError = ServiceError.invalidParameter("page must be > 0")
+
+        do {
+            _ = try await sut.getEpisodes(page: -1)
+        } catch {
+            #expect(expectedError == error, "Unexpected error: \(error)")
+        }
+
+        do {
+            _ = try await sut.getEpisodes(page: 0)
+        } catch {
+            #expect(expectedError == error, "Unexpected error: \(error)")
+        }
+    }
+
+    @Test func test_getEpisodes_withIds_badParameters() async {
+        let sut = RickAndMortyServicesImpl()
+        do {
+            _ = try await sut.getEpisodes(withIds: [])
+        } catch {
+            let expectedError = ServiceError.invalidParameter("ids must not be empty")
+            #expect(expectedError == error, "Unexpected error: \(error)")
+        }
+    }
+
+    @Test func test_getEpisode_withId_badParameters() async {
+        let sut = RickAndMortyServicesImpl()
+        let expectedError = ServiceError.invalidParameter("id must be > 0")
+
+        do {
+            _ = try await sut.getEpisode(withId: -1)
+        } catch {
+            #expect(expectedError == error, "Unexpected error: \(error)")
+        }
+
+        do {
+            _ = try await sut.getEpisode(withId: 0)
+        } catch {
+            #expect(expectedError == error, "Unexpected error: \(error)")
+        }
     }
 }

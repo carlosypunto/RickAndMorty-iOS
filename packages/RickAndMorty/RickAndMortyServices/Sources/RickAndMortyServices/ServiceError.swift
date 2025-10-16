@@ -3,10 +3,13 @@
 
 import NetworkClient
 
-public enum ServiceError: Error {
-    case notSucessfulResponse
-    case notHTTPResponse
+public enum ServiceError: Error, Equatable {
+    case invalidParameter(String)
     case decodeError
+    case notSucessfulResponse(statusCode: Int)
+    case offline
+    case notHTTPResponse
+    case unknown
 }
 
 extension ServiceError {
@@ -14,11 +17,11 @@ extension ServiceError {
         if let clientError = error as? NetworkClientError {
             switch clientError {
             case .notHTTPResponse:
-                return .notSucessfulResponse
-            case .iternetOffline:
                 return .notHTTPResponse
+            case .iternetOffline:
+                return .offline
             }
         }
-        return .notSucessfulResponse
+        return .unknown
     }
 }
