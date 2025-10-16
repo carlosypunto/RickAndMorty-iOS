@@ -3,7 +3,7 @@
 
 import NetworkClient
 
-public enum ServiceError: Error, Equatable {
+enum ServiceError: Error, Equatable {
     case invalidParameter(String)
     case decodeError
     case notSucessfulResponse(statusCode: Int)

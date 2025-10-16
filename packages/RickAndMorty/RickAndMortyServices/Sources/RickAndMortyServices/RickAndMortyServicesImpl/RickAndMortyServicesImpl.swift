@@ -13,7 +13,7 @@ final class RickAndMortyServicesImpl: RickAndMortyServices {
         return decoder
     }()
 
-    public init(networkClient: NetworkClient = NetworkClientImpl()) {
+    init(networkClient: NetworkClient = NetworkClientImpl()) {
         self.networkClient = networkClient
     }
 
