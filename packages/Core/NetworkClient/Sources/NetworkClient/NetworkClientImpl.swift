@@ -10,7 +10,7 @@ import Foundation
 /// returning the received `Data` and `HTTPURLResponse`. If the underlying
 /// response is not an `HTTPURLResponse`, it throws `NetworkClientError.notHTTPResponse`.
 /// If the request fails due to an offline network condition, it throws
-/// `NetworkClientError.iternetOffline`; otherwise, it propagates the original error.
+/// `NetworkClientError.internetOffline`; otherwise, it propagates the original error.
 public final class NetworkClientImpl: NetworkClient {
     /// The session used to execute network requests.
     private let session: URLSessionProtocol
@@ -26,7 +26,7 @@ public final class NetworkClientImpl: NetworkClient {
     /// - Parameter requestBuilder: An object that provides a configured `URLRequest`.
     /// - Returns: A tuple containing the received `Data` and `HTTPURLResponse`.
     /// - Throws: `NetworkClientError.notHTTPResponse` when the response is not HTTP,
-    ///           `NetworkClientError.iternetOffline` when there is no internet
+    ///           `NetworkClientError.internetOffline` when there is no internet
     ///           connection, or any other error produced by the underlying session.
     public func request(
         with requestBuilder: URLRequestBuilder
