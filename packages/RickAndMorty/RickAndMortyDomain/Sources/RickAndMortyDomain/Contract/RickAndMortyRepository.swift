@@ -4,15 +4,15 @@
 import Foundation
 
 public protocol RickAndMortyRepository {
-    func getCharacters(page: Int) async throws -> Page<Character>
-    func getLocations(page: Int) async throws -> Page<Location>
-    func getEpisodes(page: Int) async throws -> Page<Episode>
+    func getCharacters(page: Int) async throws(RepositoryError) -> Page<Character>
+    func getCharacters(withIds ids: [Int]) async throws(RepositoryError) -> [Character]
+    func getCharacter(withId id: Int) async throws(RepositoryError) -> Character
 
-    func getCharacters(withIds ids: [Int]) async throws -> [Character]
-    func getLocations(withIds ids: [Int]) async throws -> [Location]
-    func getEpisodes(withIds ids: [Int]) async throws -> [Episode]
+    func getEpisodes(page: Int) async throws(RepositoryError) -> Page<Episode>
+    func getEpisodes(withIds ids: [Int]) async throws(RepositoryError) -> [Episode]
+    func getEpisode(withId id: Int) async throws(RepositoryError) -> Episode
 
-    func getCharacter(withId id: Int) async throws -> Character
-    func getLocation(withId id: Int) async throws -> Location
-    func getEpisode(withId id: Int) async throws -> Episode
+    func getLocations(page: Int) async throws(RepositoryError) -> Page<Location>
+    func getLocations(withIds ids: [Int]) async throws(RepositoryError) -> [Location]
+    func getLocation(withId id: Int) async throws(RepositoryError) -> Location
 }

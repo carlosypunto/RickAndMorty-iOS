@@ -7,14 +7,6 @@ import NetworkClient
 @testable import RickAndMortyServices
 
 struct CharactersServiceRequestTests {
-    // make a real call
-    @Test func test_getCharacters_firstPage_requestUrl_real() async {
-        let sut = RickAndMortyServicesImpl()
-        let salida = try! await sut.getCharacters(page: 1)
-        print(salida.toDomain.elements)
-        #expect(salida.info.count == 826)
-    }
-
     @Test func test_getCharacters_firstPage_requestUrl() async {
         let client = NetworkClientSpy(data: DTOCharacterJSONStubs.characterPageData)
         let sut = RickAndMortyServicesImpl(networkClient: client)
@@ -45,6 +37,65 @@ struct CharactersServiceRequestTests {
         let id = Int.random(in: 1..<100)
         _ = try! await sut.getCharacter(withId: id)
         #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character/\(id)")
+    }
+
+    // MARK: - response error
+
+    @Test func test_getCharacters_firstPage_responseError() async {
+        let client = NetworkClientErrorSpy()
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        do {
+            _ = try await sut.getCharacters(page: 1)
+        } catch {
+            #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character")
+            #expect(ServiceError.notSuccessfulResponse(statusCode: 500) == error)
+            return
+        }
+        Issue.record("A ServiceError was expected.")
+    }
+
+    @Test func test_getCharacters_responseError() async {
+        let client = NetworkClientErrorSpy()
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        let page = Int.random(in: 2..<50)
+        do {
+            _ = try await sut.getCharacters(page: page)
+        } catch {
+            #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character?page=\(page)")
+            #expect(ServiceError.notSuccessfulResponse(statusCode: 500) == error)
+            return
+        }
+        Issue.record("A ServiceError was expected.")
+    }
+
+    @Test func test_getCharacters_withIds_responseError() async {
+        let client = NetworkClientErrorSpy()
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        let ids = [Int].randomIds().sorted()
+
+        do {
+            _ = try await sut.getCharacters(withIds: ids)
+        } catch {
+            let idsString = ids.map(String.init).joined(separator: ",")
+            #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character/\(idsString)")
+            #expect(ServiceError.notSuccessfulResponse(statusCode: 500) == error)
+            return
+        }
+        Issue.record("A ServiceError was expected.")
+    }
+
+    @Test func test_getCharacter_withId_responseError() async {
+        let client = NetworkClientErrorSpy()
+        let sut = RickAndMortyServicesImpl(networkClient: client)
+        let id = Int.random(in: 1..<100)
+        do {
+            _ = try await sut.getCharacter(withId: id)
+        } catch {
+            #expect(client.requestedUrlAbsoluteString == "https://rickandmortyapi.com/api/character/\(id)")
+            #expect(ServiceError.notSuccessfulResponse(statusCode: 500) == error)
+            return
+        }
+        Issue.record("A ServiceError was expected.")
     }
 
     // MARK: - bad parameters

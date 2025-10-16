@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct Location {
+public struct Location: Sendable {
     public let id: Int
     public let name: String
     public let type: String

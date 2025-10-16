@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct Episode {
+public struct Episode: Sendable {
     public let id: Int
     public let title: String
     public let characters: [Int]

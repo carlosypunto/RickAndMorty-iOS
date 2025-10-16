@@ -60,7 +60,7 @@ struct DefaultNetworkClientTests {
             _ = try await sut.request(with: requestBuilder)
             Issue.record("An iternetOffline error was expected")
         } catch let error as NetworkClientError {
-            #expect(error == .iternetOffline)
+            #expect(error == .internetOffline)
         } catch {
             Issue.record("Unexpected error: \(error)")
         }

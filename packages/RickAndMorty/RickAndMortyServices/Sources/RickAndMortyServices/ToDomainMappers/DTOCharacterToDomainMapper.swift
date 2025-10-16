@@ -5,8 +5,8 @@ import Foundation
 import RickAndMortyDomain
 
 extension DTO.Page<DTO.Character> {
-    var toDomain: RickAndMortyDomain.Page<RickAndMortyDomain.Character> {
-        RickAndMortyDomain.Page(
+    var toDomain: Page<Character> {
+        Page(
             isLast: info.next == nil,
             elements: results.map(\.toDomain)
         )
@@ -14,8 +14,8 @@ extension DTO.Page<DTO.Character> {
 }
 
 extension DTO.Character {
-    var toDomain: RickAndMortyDomain.Character {
-        RickAndMortyDomain.Character(
+    var toDomain: Character {
+        Character(
             id: id,
             name: name,
             status: status.toDomain,
@@ -32,7 +32,7 @@ extension DTO.Character {
 }
 
 extension DTO.Character.Gender {
-    var toDomain: RickAndMortyDomain.Character.Gender {
+    var toDomain: Character.Gender {
         switch self {
         case .female: .female
         case .male: .male
@@ -43,14 +43,14 @@ extension DTO.Character.Gender {
 }
 
 extension DTO.Character.Location {
-    var toDomain: RickAndMortyDomain.Character.Location {
+    var toDomain: Character.Location {
         let id = Int((URL(string: url)?.lastPathComponent) ?? "0") ?? 0
         return .init(id: id, name: name)
     }
 }
 
 extension DTO.Character.Status {
-    var toDomain: RickAndMortyDomain.Character.Status {
+    var toDomain: Character.Status {
         switch self {
         case .alive: .alive
         case .dead: .dead

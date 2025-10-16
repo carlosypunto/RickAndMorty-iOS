@@ -14,7 +14,7 @@ extension RickAndMortyServicesImpl {
         }
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSuccessfulResponse(statusCode: response.statusCode) }
             let characterPage = try decode(DTO.Page<DTO.Character>.self, from: data)
             return characterPage
         } catch {
@@ -29,7 +29,7 @@ extension RickAndMortyServicesImpl {
         builder.setPath("character/\(idsString)")
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSuccessfulResponse(statusCode: response.statusCode) }
             let characters = try decode([DTO.Character].self, from: data)
             return characters
         } catch {
@@ -43,7 +43,7 @@ extension RickAndMortyServicesImpl {
         builder.setPath("character/\(id)")
         do {
             let (data, response) = try await networkClient.request(with: builder)
-            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSucessfulResponse(statusCode: response.statusCode) }
+            guard 200..<300 ~= response.statusCode else { throw ServiceError.notSuccessfulResponse(statusCode: response.statusCode) }
             let character = try decode(DTO.Character.self, from: data)
             return character
         } catch {

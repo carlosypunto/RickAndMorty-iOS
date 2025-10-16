@@ -6,7 +6,7 @@ import NetworkClient
 enum ServiceError: Error, Equatable {
     case invalidParameter(String)
     case decodeError
-    case notSucessfulResponse(statusCode: Int)
+    case notSuccessfulResponse(statusCode: Int)
     case offline
     case notHTTPResponse
     case unknown
@@ -14,6 +14,10 @@ enum ServiceError: Error, Equatable {
 
 extension ServiceError {
     static func map(from error: Error) -> ServiceError {
+        if let serviceError = error as? ServiceError {
+            return serviceError
+        }
+
         if let clientError = error as? NetworkClientError {
             switch clientError {
             case .notHTTPResponse:
@@ -22,6 +26,7 @@ extension ServiceError {
                 return .offline
             }
         }
+
         return .unknown
     }
 }

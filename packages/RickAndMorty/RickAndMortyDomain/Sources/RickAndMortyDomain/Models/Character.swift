@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct Character {
+public struct Character: Sendable {
     public let id: Int
     public let name: String
     public let status: Status
@@ -44,14 +44,14 @@ public struct Character {
 }
 
 public extension Character {
-    enum Gender: String {
+    enum Gender: String, Sendable {
         case female
         case male
         case genderless
         case unknown
     }
 
-    struct Location {
+    struct Location: Sendable {
         public let id: Int
         public let name: String
 
@@ -61,7 +61,7 @@ public extension Character {
         }
     }
 
-    enum Status: String {
+    enum Status: String, Sendable {
         case alive
         case dead
         case unknown

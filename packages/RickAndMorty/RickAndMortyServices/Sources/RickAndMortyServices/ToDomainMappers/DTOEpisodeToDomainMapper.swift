@@ -4,8 +4,8 @@
 import RickAndMortyDomain
 
 extension DTO.Page<DTO.Episode> {
-    var toDomain: RickAndMortyDomain.Page<RickAndMortyDomain.Episode> {
-        RickAndMortyDomain.Page(
+    var toDomain: Page<Episode> {
+        Page(
             isLast: info.next == nil,
             elements: results.map(\.toDomain)
         )
@@ -13,8 +13,8 @@ extension DTO.Page<DTO.Episode> {
 }
 
 extension DTO.Episode {
-    var toDomain: RickAndMortyDomain.Episode {
-        RickAndMortyDomain.Episode(
+    var toDomain: Episode {
+        Episode(
             id: id,
             title: name,
             characters: characters.idsFromURLs,
