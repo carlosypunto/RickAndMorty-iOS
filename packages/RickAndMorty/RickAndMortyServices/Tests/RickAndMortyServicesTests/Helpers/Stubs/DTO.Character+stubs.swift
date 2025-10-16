@@ -89,7 +89,7 @@ extension DTO.Character {
             "https://rickandmortyapi.com/api/episode/51",
         ],
         url: "https://rickandmortyapi.com/api/character/1",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-04T18:48:46.250Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-04T18:48:46.250Z")!
     )
 
     static let secondCharacterStub = DTO.Character(
@@ -162,6 +162,6 @@ extension DTO.Character {
             "https://rickandmortyapi.com/api/episode/51",
         ],
         url: "https://rickandmortyapi.com/api/character/2",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-04T18:50:21.651Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-04T18:50:21.651Z")!
     )
 }

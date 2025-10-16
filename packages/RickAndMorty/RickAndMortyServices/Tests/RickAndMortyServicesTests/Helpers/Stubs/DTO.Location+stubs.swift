@@ -55,7 +55,7 @@ extension DTO.Location {
             "https://rickandmortyapi.com/api/character/394",
         ],
         url: "https://rickandmortyapi.com/api/location/1",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T12:42:04.162Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-10T12:42:04.162Z")!
     )
 
     static let secondLocationStub = DTO.Location(
@@ -67,6 +67,6 @@ extension DTO.Location {
             "https://rickandmortyapi.com/api/character/6"
         ],
         url: "https://rickandmortyapi.com/api/location/2",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T13:06:38.182Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-10T13:06:38.182Z")!
     )
 }

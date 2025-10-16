@@ -9,7 +9,7 @@ final class RickAndMortyServicesImpl: RickAndMortyServices {
     let networkClient: NetworkClient
     let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(.iso8601Formatter)
+        decoder.dateDecodingStrategy = .customWithISO8601Formatter
         return decoder
     }()
 

@@ -46,7 +46,7 @@ extension DTO.Episode {
             "https://rickandmortyapi.com/api/character/405",
         ],
         url: "https://rickandmortyapi.com/api/episode/2",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T12:56:33.916Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-10T12:56:33.916Z")!
     )
 
     static let secondEpisodeStub = DTO.Episode(
@@ -76,7 +76,7 @@ extension DTO.Episode {
             "https://rickandmortyapi.com/api/character/405",
         ],
         url: "https://rickandmortyapi.com/api/episode/3",
-        created: DateFormatter.iso8601Formatter.date(from: "2017-11-10T12:56:33.916Z")!
+        created: Formatter.customISO8601DateFormatter.date(from: "2017-11-10T12:56:33.916Z")!
     )
 }
 
