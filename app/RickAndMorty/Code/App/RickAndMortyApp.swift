@@ -7,7 +7,7 @@ import SwiftUI
 struct RickAndMortyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ListScreenFactory.view()
         }
     }
 }

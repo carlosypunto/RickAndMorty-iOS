@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0798556B2EA3E85300BF80A2 /* RickAndMortyData in Frameworks */ = {isa = PBXBuildFile; productRef = 0798556A2EA3E85300BF80A2 /* RickAndMortyData */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0798540D2EA0F89B00BF80A2 /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -16,6 +20,11 @@
 			path = RickAndMorty;
 			sourceTree = "<group>";
 		};
+		0798556C2EA3F41B00BF80A2 /* DevelopmentAssets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DevelopmentAssets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -23,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0798556B2EA3E85300BF80A2 /* RickAndMortyData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,6 +42,7 @@
 		079854042EA0F89B00BF80A2 = {
 			isa = PBXGroup;
 			children = (
+				0798556C2EA3F41B00BF80A2 /* DevelopmentAssets */,
 				0798540F2EA0F89B00BF80A2 /* RickAndMorty */,
 				0798540E2EA0F89B00BF80A2 /* Products */,
 			);
@@ -62,9 +73,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0798540F2EA0F89B00BF80A2 /* RickAndMorty */,
+				0798556C2EA3F41B00BF80A2 /* DevelopmentAssets */,
 			);
 			name = RickAndMorty;
 			packageProductDependencies = (
+				0798556A2EA3E85300BF80A2 /* RickAndMortyData */,
 			);
 			productName = RickAndMorty;
 			productReference = 0798540D2EA0F89B00BF80A2 /* RickAndMorty.app */;
@@ -95,6 +108,9 @@
 			);
 			mainGroup = 079854042EA0F89B00BF80A2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				079855692EA3E85300BF80A2 /* XCLocalSwiftPackageReference "../packages/RickAndMorty/RickAndMortyData" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0798540E2EA0F89B00BF80A2 /* Products */;
 			projectDirPath = "";
@@ -186,6 +202,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -243,6 +260,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -254,6 +272,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = DevelopmentAssets;
 				DEVELOPMENT_TEAM = 2V65Z4JB29;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -287,6 +306,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = DevelopmentAssets;
 				DEVELOPMENT_TEAM = 2V65Z4JB29;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -335,6 +355,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		079855692EA3E85300BF80A2 /* XCLocalSwiftPackageReference "../packages/RickAndMorty/RickAndMortyData" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../packages/RickAndMorty/RickAndMortyData;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0798556A2EA3E85300BF80A2 /* RickAndMortyData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RickAndMortyData;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 079854052EA0F89B00BF80A2 /* Project object */;
 }

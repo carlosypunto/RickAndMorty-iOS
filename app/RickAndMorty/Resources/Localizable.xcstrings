@@ -1,0 +1,87 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "charactersListScreen.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Characters"
+          }
+        }
+      }
+    },
+    "errorView.accountLimitErrorMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The account limit has been reached. Try again later."
+          }
+        }
+      }
+    },
+    "errorView.genericErrorTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error occurred"
+          }
+        }
+      }
+    },
+    "errorView.offlineErrorMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The device does not have an internet connection. Try again later."
+          }
+        }
+      }
+    },
+    "errorView.okButtonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        }
+      }
+    },
+    "errorView.retryButtonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        }
+      }
+    },
+    "errorView.unmanageableErrorMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unmanageable error occurred"
+          }
+        }
+      }
+    },
+    "errorView.unmanageableErrorTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unmanageable Error"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}
