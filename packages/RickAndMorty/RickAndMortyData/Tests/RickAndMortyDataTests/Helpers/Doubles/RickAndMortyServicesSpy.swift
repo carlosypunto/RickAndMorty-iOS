@@ -4,7 +4,7 @@
 import Foundation
 @testable import RickAndMortyData
 
-final class RickAndMortyDataSpy: RickAndMortyData {
+final class RickAndMortyDataSpy: RickAndMortyServices {
     var requestedPage: Int?
     var requestedIds: [Int]?
     var requestedId: Int?

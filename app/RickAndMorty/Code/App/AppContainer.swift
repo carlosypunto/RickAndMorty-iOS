@@ -11,5 +11,7 @@ protocol AppContainer {
 
 struct DefaultContainer: AppContainer {
     let repository: RickAndMortyRepository = RickAndMortyRepositoryImpl()
-    var getCharactersPage: GetCharactersPageUseCase { .init(repository: repository) }
+    var getCharactersPage: GetCharactersPageUseCase {
+        GetCharactersPageUseCaseImpl(repository: repository)
+    }
 }
