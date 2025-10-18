@@ -4,7 +4,7 @@
 import Foundation
 @testable import NetworkClient
 
-final class MockURLSession: URLSessionProtocol {
+final class MockURLSession: URLSessionProtocol, @unchecked Sendable {
     var data: Data?
     var urlResponse: URLResponse?
     var error: Error?

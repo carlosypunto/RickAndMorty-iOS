@@ -24,7 +24,7 @@ import Foundation
 ///     }
 /// }
 /// ```
-public protocol URLSessionProtocol {
+public protocol URLSessionProtocol: Sendable {
     /// Performs a network request and returns the response bytes along with the associated `URLResponse`.
     /// - Parameter request: The `URLRequest` to execute.
     /// - Parameter delegate: An optional delegate to receive events from the associated `URLSessionTask`.

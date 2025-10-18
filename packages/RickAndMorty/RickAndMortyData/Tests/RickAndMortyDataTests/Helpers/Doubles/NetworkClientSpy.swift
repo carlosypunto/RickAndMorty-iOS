@@ -4,7 +4,7 @@
 import Foundation
 import NetworkClient
 
-final class NetworkClientSpy: NetworkClient {
+final class NetworkClientSpy: NetworkClient, @unchecked Sendable {
     let data: Data
     var requestedUrlAbsoluteString: String?
 

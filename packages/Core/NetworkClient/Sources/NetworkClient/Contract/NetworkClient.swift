@@ -8,7 +8,7 @@ import Foundation
 ///
 /// This protocol enables dependency injection and easier testing by decoupling higher-level
 /// networking logic from concrete transport implementations (e.g., `URLSession`).
-public protocol NetworkClient {
+public protocol NetworkClient: Sendable {
     /// Executes a request built by the provided `URLRequestBuilder`.
     /// - Parameter requestBuilder: A builder responsible for producing a configured `URLRequest`.
     /// - Returns: A tuple containing the response `Data` and the associated `HTTPURLResponse`.
