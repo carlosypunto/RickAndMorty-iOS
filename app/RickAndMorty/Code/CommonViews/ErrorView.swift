@@ -3,51 +3,38 @@
 
 import SwiftUI
 
+enum ScreenError {
+    case unmanageable
+    case offline
+    case canRetry
+}
+
 struct ErrorView: View {
     let error: ScreenError
-    let retry: () -> Void
-    @Environment(\.dismiss) private var dismiss
+    let action: () async -> Void
 
     var body: some View {
-        ZStack {
+        VStack {
+            Text("errorView.genericErrorTitle")
+                .font(.title2)
+                .fontWeight(.bold)
+
+            Spacer().frame(height: Constant.extraSpacing)
+
             switch error {
             case .unmanageable:
-                VStack {
-                    Text("errorView.unmanageableErrorTitle")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                Text("errorView.unmanageableErrorMessage")
+            case .offline:
+                Text("errorView.offlineErrorMessage")
+            case .canRetry:
+                Text("errorView.accountLimitErrorMessage")
+            }
 
-                    Spacer().frame(height: Constant.extraSpacing)
+            Spacer().frame(height: Constant.extraSpacing)
 
-                    Text("errorView.unmanageableErrorMessage")
-
-                    Spacer().frame(height: Constant.extraSpacing)
-
-                    Button("errorView.okButtonTitle") {
-                        dismiss()
-                    }
-                }
-            case .offline, .canRetry:
-                VStack {
-                    Text("errorView.genericErrorTitle")
-                        .font(.title2)
-
-                        .fontWeight(.bold)
-
-                    Spacer().frame(height: Constant.extraSpacing)
-
-                    if case .offline = error {
-                        Text("errorView.offlineErrorMessage")
-                    } else {
-                        Text("errorView.accountLimitErrorMessage")
-                    }
-
-                    Spacer().frame(height: Constant.extraSpacing)
-
-                    Button("errorView.retryButtonTitle") {
-                        dismiss()
-                        retry()
-                    }
+            Button("errorView.retryButtonTitle") {
+                Task {
+                    await action()
                 }
             }
         }
@@ -55,6 +42,7 @@ struct ErrorView: View {
         .background(Constant.errorBGColor)
         .cornerRadius(Constant.cornerRadius)
         .padding(.horizontal, Constant.horizontalPadding)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -67,14 +55,14 @@ private enum Constant {
 }
 
 #Preview("Unmanageable") {
-    ErrorView(error: .unmanageable, retry: {})
+    ErrorView(error: .unmanageable, action: {})
 }
 
 #Preview("Offline") {
-    ErrorView(error: .offline, retry: {})
+    ErrorView(error: .offline, action: {})
 }
 
 #Preview("CanRetry") {
-    ErrorView(error: .canRetry, retry: {})
+    ErrorView(error: .canRetry, action: {})
 }
 

@@ -6,9 +6,9 @@ public protocol GetCharactersPageUseCase {
 }
 
 public final class GetCharactersPageUseCaseImpl: GetCharactersPageUseCase {
-    var repository: RickAndMortyRepository
+    var repository: CharactersRepository
 
-    public init(repository: RickAndMortyRepository) {
+    public init(repository: CharactersRepository) {
         self.repository = repository
     }
 

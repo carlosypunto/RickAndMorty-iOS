@@ -41,16 +41,6 @@
         }
       }
     },
-    "errorView.okButtonTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ok"
-          }
-        }
-      }
-    },
     "errorView.retryButtonTitle" : {
       "localizations" : {
         "en" : {
@@ -68,16 +58,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "An unmanageable error occurred"
-          }
-        }
-      }
-    },
-    "errorView.unmanageableErrorTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unmanageable Error"
           }
         }
       }

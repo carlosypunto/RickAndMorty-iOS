@@ -9,30 +9,28 @@ import RickAndMortyDomain
 @Suite("ListScreenViewModel")
 struct ListScreenViewModelTests {
 
-    @Test("Initial state is loading and cannot load more")
+    @Test("Initial state is idle and can load more")
     @MainActor
     func initialState() async throws {
         let useCase = GetCharactersPageUseCaseMock()
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
-        #expect(sut.viewState == .loading)
-        #expect(sut.canLoadMore == false)
-        #expect(sut.presentedError == nil)
+        #expect(sut.state == .idle)
+        #expect(sut.canLoadMore == true)
+        #expect(sut.characters.isEmpty)
     }
 
     @Test("First successful load sets success state and canLoadMore true when not last page")
     @MainActor
     func firstLoadSuccess() async throws {
         let useCase = GetCharactersPageUseCaseMock()
-        useCase.pages[1] = .success(makePage(ids: [1,2,3], isLast: false))
+        useCase.pages[1] = .success(Page<Character>.makePage(ids: [1,2,3], isLast: false))
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
-        sut.loadNextPage()
-        // Allow task to complete
-        try? await Task.sleep(nanoseconds: 50_000_000)
+        await sut.loadNextPage()
 
-        if case let .success(characters) = sut.viewState {
-            #expect(characters.map { $0.id } == [1,2,3])
+        if case .success = sut.state {
+            #expect(sut.characters.map { $0.id } == [1,2,3])
         } else {
             Issue.record("Expected success state")
         }
@@ -44,20 +42,19 @@ struct ListScreenViewModelTests {
     @MainActor
     func pagination() async throws {
         let useCase = GetCharactersPageUseCaseMock()
-        useCase.pages[1] = .success(makePage(ids: [1,2,3], isLast: false))
-        useCase.pages[2] = .success(makePage(ids: [4,5], isLast: true))
+        useCase.pages[1] = .success(Page<Character>.makePage(ids: [1,2,3], isLast: false))
+        useCase.pages[2] = .success(Page<Character>.makePage(ids: [4,5], isLast: true))
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
-        sut.loadNextPage()
-        try? await Task.sleep(nanoseconds: 50_000_000)
-        sut.loadNextPage()
-        try? await Task.sleep(nanoseconds: 50_000_000)
+        await sut.loadNextPage()
+        await sut.loadNextPage()
 
-        if case let .success(characters) = sut.viewState {
-            #expect(characters.map { $0.id } == [1,2,3,4,5])
+        if case .success = sut.state {
+            #expect(sut.characters.map { $0.id } == [1,2,3,4,5])
         } else {
             Issue.record("Expected success state after two pages")
         }
+
         #expect(sut.canLoadMore == false)
         #expect(useCase.receivedPages == [1,2])
     }
@@ -66,23 +63,21 @@ struct ListScreenViewModelTests {
     @MainActor
     func errorHandling() async throws {
         let useCase = GetCharactersPageUseCaseMock()
-        useCase.pages[1] = .success(makePage(ids: [1,2], isLast: false))
-        useCase.pages[2] = .failure(RepositoryError.unknown)
+        useCase.pages[1] = .success(Page<Character>.makePage(ids: [1,2], isLast: false))
+        useCase.pages[2] = .failure(RepositoryError.offline)
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
-        sut.loadNextPage() // page 1 ok
-        try? await Task.sleep(nanoseconds: 50_000_000)
-        sut.loadNextPage() // page 2 fails
-        try? await Task.sleep(nanoseconds: 50_000_000)
+        await sut.loadNextPage() // page 1 ok
+        await sut.loadNextPage() // page 2 fails
 
         // Expect error state but retaining first page characters
-        if case let .error(currentCharacters) = sut.viewState {
-            #expect(currentCharacters.map { $0.id } == [1,2])
+        if case .error = sut.state {
+            #expect(sut.characters.map { $0.id } == [1,2])
         } else {
             Issue.record("Expected error state after failure")
         }
-        #expect(sut.presentedError != nil)
-        #expect(sut.canLoadMore == false || sut.canLoadMore == true) // can be either depending on failure semantics, main check is state and error
+        #expect(sut.state == .error(.offline))
+        #expect(sut.canLoadMore == false || sut.canLoadMore == true)
     }
 
     @Test("Concurrent loadNextPage calls only trigger one underlying request")
@@ -90,7 +85,7 @@ struct ListScreenViewModelTests {
     func avoidsConcurrentLoads() async throws {
         let useCase = GetCharactersPageUseCaseMock()
         useCase.delay = .milliseconds(100)
-        useCase.pages[1] = .success(makePage(ids: [1], isLast: true))
+        useCase.pages[1] = .success(Page<Character>.makePage(ids: [1], isLast: true))
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
         await withTaskGroup(of: Void.self) { group in
@@ -99,63 +94,94 @@ struct ListScreenViewModelTests {
             }
             await group.waitForAll()
         }
-        try? await Task.sleep(nanoseconds: 150_000_000)
 
         #expect(useCase.receivedPages == [1])
     }
+}
 
-    @Test("shouldPreload returns true near the threshold and respects canLoadMore/loading")
+@Suite("ListScreenViewModel - Integration")
+struct ListScreenViewModelIntegrationTests {
+    @Test("")
     @MainActor
-    func shouldPreloadBehavior() async throws {
-        let useCase = GetCharactersPageUseCaseMock()
-        useCase.pages[1] = .success(makePage(ids: Array(1...20), isLast: false))
+    func loadNextPage_withFreshState_shouldAppendAndSetSuccess() async {
+        let repository = RepositoryStub(pages: [.stubPage1])
+        let useCase = GetCharactersPageUseCaseImpl(repository: repository)
         let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
 
-        sut.loadNextPage()
-        try? await Task.sleep(nanoseconds: 50_000_000)
+        await sut.loadNextPage()
 
-        // pick an element within last 5 items (default threshold)
-        let nearEndId = 20 - 2 // index 17 (0-based), within last 5
-        guard case let .success(characters) = sut.viewState,
-              let target = characters.first(where: { $0.id == nearEndId }) else {
-            Issue.record("Expected characters loaded")
-            return
-        }
-
-        // canLoadMore is true (page not last), loading is false after completion
-        #expect(sut.shouldPreload(for: target) == true)
-
-        // pick an element far from the end
-        let farId = 5
-        let far = characters.first { $0.id == farId }!
-        #expect(sut.shouldPreload(for: far) == false)
+        #expect(sut.characters.isEmpty == false)
+        #expect(sut.state == .success)
+        #expect(sut.canLoadMore == true)
     }
 
-    // MARK: - Mocks
-    final class GetCharactersPageUseCaseMock: GetCharactersPageUseCase {
-        struct PageConfig {
-            let elements: [Character]
-            let isLast: Bool
+    @Test("")
+    @MainActor
+    func loadNextPage_whenAlreadyLoading_shouldNotDuplicateRequest() async {
+        let slowRepository = RepositoryStub(pages: [.stubPage1], delay: .milliseconds(150))
+        let useCase = GetCharactersPageUseCaseImpl(repository: slowRepository)
+        let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
+
+        await withTaskGroup(of: Void.self) { group in
+            for _ in 0..<3 { group.addTask { await sut.loadNextPage() } }
+            await group.waitForAll()
         }
 
-        var pages: [Int: Result<Page<Character>, RepositoryError>] = [:]
-        private(set) var receivedPages: [Int] = []
-        var delay: Duration? = nil
 
-        func execute(page: Int) async throws(RepositoryError) -> Page<Character> {
-            receivedPages.append(page)
-            if let delay { try? await Task.sleep(for: delay) }
-            switch pages[page] ?? .failure(RepositoryError.unknown) {
-            case .success(let page):
-                return page
-            case .failure(let error):
-                throw error
-            }
-        }
+        #expect(sut.characters.count == Page<Character>.stubPage1.elements.count)
     }
 
-    // MARK: - Helpers
-    private func makeCharacters(ids: [Int]) -> [Character] {
+    @Test("")
+    @MainActor
+    func loadNextPage_onLastPage_shouldSetCanLoadMoreToFalse() async {
+        let repository = RepositoryStub(pages: [.stubLastPage])
+        let useCase = GetCharactersPageUseCaseImpl(repository: repository)
+        let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
+
+        await sut.loadNextPage()
+
+        #expect(sut.canLoadMore == false)
+        #expect(sut.state == .success)
+    }
+
+    @Test("")
+    @MainActor
+    func loadNextPage_afterRepositoryFailure_shouldExposeErrorThenRecoverOnRetry() async {
+        let flakyRepository = FlakyRepositoryStub(failFirst: true, page: .stubPage1)
+        let useCase = GetCharactersPageUseCaseImpl(repository: flakyRepository)
+        let sut = ListScreenViewModel(getCharactersPageUseCase: useCase)
+
+        await sut.loadNextPage()
+
+        #expect(sut.state == .error(.unmanageable))
+
+        await sut.loadNextPage()
+
+        #expect(sut.state == .success)
+        #expect(sut.characters.isEmpty == false)
+    }
+}
+
+// MARK: - Helpers
+
+private extension Page<Character> {
+    static var emptyLast: Page<Character> {
+        .init(isLast: true, elements: [])
+    }
+
+    static var stubLastPage: Page<Character> {
+        makePage(ids: [8, 9, 10], isLast: true)
+    }
+
+    static var stubPage1: Page<Character> {
+        makePage(ids: [1,2,3], isLast: false)
+    }
+
+    static func makePage(ids: [Int], isLast: Bool) -> Page<Character> {
+        Page(isLast: isLast, elements: makeCharacters(ids: ids))
+    }
+
+    static func makeCharacters(ids: [Int]) -> [Character] {
         ids.map { id in
             Character(
                 id: id,
@@ -172,9 +198,67 @@ struct ListScreenViewModelTests {
             )
         }
     }
+}
 
-    private func makePage(ids: [Int], isLast: Bool) -> Page<Character> {
-        Page(isLast: isLast, elements: makeCharacters(ids: ids))
+// MARK: - Mocks
+
+private final class GetCharactersPageUseCaseMock: GetCharactersPageUseCase {
+    var pages: [Int: Result<Page<Character>, RepositoryError>] = [:]
+    private(set) var receivedPages: [Int] = []
+    var delay: Duration? = nil
+
+    func execute(page: Int) async throws(RepositoryError) -> Page<Character> {
+        receivedPages.append(page)
+        if let delay { try? await Task.sleep(for: delay) }
+        switch pages[page] ?? .failure(RepositoryError.unknown) {
+        case .success(let page):
+            return page
+        case .failure(let error):
+            throw error
+        }
+    }
+}
+
+private struct RepositoryStub: CharactersRepository {
+    var pages: [Page<Character>]
+    var delay: Duration = .zero
+
+    func getCharacters(page: Int) async throws(RepositoryError) -> Page<Character> {
+        try! await Task.sleep(for: delay)
+        guard page - 1 < pages.count else { return Page<Character>.emptyLast }
+        return pages[page - 1]
     }
 
+    func getCharacters(withIds ids: [Int]) async throws(RickAndMortyDomain.RepositoryError) -> [RickAndMortyDomain.Character] {
+        throw .server
+    }
+
+    func getCharacter(withId id: Int) async throws(RickAndMortyDomain.RepositoryError) -> RickAndMortyDomain.Character {
+        throw .server
+    }
+}
+
+private final class FlakyRepositoryStub: CharactersRepository {
+    private(set) var pages: [Page<Character>]
+    private(set) var failFirst: Bool
+    private var hasFail = false
+
+    init(failFirst: Bool, page: Page<Character>) {
+        self.pages = [page]
+        self.failFirst = failFirst
+    }
+
+    func getCharacters(page: Int) async throws(RepositoryError) -> Page<Character> {
+        if failFirst, !hasFail { hasFail = true; throw .server }
+        guard page - 1 < pages.count else { return Page<Character>.emptyLast }
+        return pages[page - 1]
+    }
+
+    func getCharacters(withIds ids: [Int]) async throws(RickAndMortyDomain.RepositoryError) -> [RickAndMortyDomain.Character] {
+        throw .server
+    }
+
+    func getCharacter(withId id: Int) async throws(RickAndMortyDomain.RepositoryError) -> RickAndMortyDomain.Character {
+        throw .server
+    }
 }

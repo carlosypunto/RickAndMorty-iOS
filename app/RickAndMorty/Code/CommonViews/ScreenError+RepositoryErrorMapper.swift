@@ -4,8 +4,12 @@
 import RickAndMortyDomain
 
 extension ScreenError {
-    static func from(_ error: RepositoryError) -> ScreenError {
-        switch error {
+    static func from(_ error: Error) -> ScreenError {
+        guard let repositoryError = error as? RepositoryError else {
+            return .unmanageable
+        }
+
+        return switch repositoryError {
             case .rateLimited:
                 .canRetry
             case .offline:
