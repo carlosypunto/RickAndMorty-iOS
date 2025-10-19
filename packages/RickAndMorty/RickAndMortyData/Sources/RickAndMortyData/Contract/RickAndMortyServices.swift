@@ -3,7 +3,7 @@
 
 import Foundation
 
-protocol RickAndMortyServices {
+protocol RickAndMortyServices: Sendable {
     func getCharacters(page: Int) async throws(ServiceError) -> DTO.Page<DTO.Character>
     func getCharacters(withIds ids: [Int]) async throws(ServiceError) -> [DTO.Character]
     func getCharacter(withId id: Int) async throws(ServiceError) -> DTO.Character

@@ -202,7 +202,7 @@ private extension Page<Character> {
 
 // MARK: - Mocks
 
-private final class GetCharactersPageUseCaseMock: GetCharactersPageUseCase {
+private final class GetCharactersPageUseCaseMock: GetCharactersPageUseCase, @unchecked Sendable {
     var pages: [Int: Result<Page<Character>, RepositoryError>] = [:]
     private(set) var receivedPages: [Int] = []
     var delay: Duration? = nil
@@ -238,7 +238,7 @@ private struct RepositoryStub: CharactersRepository {
     }
 }
 
-private final class FlakyRepositoryStub: CharactersRepository {
+private final class FlakyRepositoryStub: CharactersRepository, @unchecked Sendable {
     private(set) var pages: [Page<Character>]
     private(set) var failFirst: Bool
     private var hasFail = false

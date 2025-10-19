@@ -4,7 +4,7 @@
 import Foundation
 @testable import RickAndMortyDomain
 
-final class RickAndMortyRepositorySpy: RickAndMortyRepository {
+final class RickAndMortyRepositorySpy: RickAndMortyRepository, @unchecked Sendable {
     var requestedPage: Int?
     var requestedIds: [Int]?
     var requestedId: Int?

@@ -28,5 +28,5 @@ let package = Package(
             dependencies: ["RickAndMortyData"]
         ),
     ],
-    swiftLanguageModes: [.v5, .v6]
+    swiftLanguageModes: [.v6]
 )

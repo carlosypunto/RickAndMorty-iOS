@@ -1,12 +1,12 @@
 // Copyright (c) 2025 Carlos García Nieto. All rights reserved.
 //
 
-public protocol GetCharactersPageUseCase {
+public protocol GetCharactersPageUseCase: Sendable {
     func execute(page: Int) async throws(RepositoryError) -> Page<Character>
 }
 
-public final class GetCharactersPageUseCaseImpl: GetCharactersPageUseCase {
-    var repository: CharactersRepository
+public final class GetCharactersPageUseCaseImpl: GetCharactersPageUseCase, Sendable {
+    let repository: CharactersRepository
 
     public init(repository: CharactersRepository) {
         self.repository = repository
