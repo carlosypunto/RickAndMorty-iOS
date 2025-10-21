@@ -16,8 +16,7 @@ struct ErrorView: View {
     var body: some View {
         VStack {
             Text("errorView.genericErrorTitle")
-                .font(.title2)
-                .fontWeight(.bold)
+                .textStyle(.header)
 
             Spacer().frame(height: Constant.extraSpacing)
 
@@ -39,15 +38,13 @@ struct ErrorView: View {
             }
         }
         .padding(Constant.padding)
-        .background(Constant.errorBGColor)
+        .background(Color.errorBGColor)
         .cornerRadius(Constant.cornerRadius)
         .padding(.horizontal, Constant.horizontalPadding)
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 private enum Constant {
-    static let errorBGColor: Color = Color("AlertBG")
     static let cornerRadius: CGFloat = 10
     static let extraSpacing: CGFloat = 10
     static let padding: CGFloat = 20

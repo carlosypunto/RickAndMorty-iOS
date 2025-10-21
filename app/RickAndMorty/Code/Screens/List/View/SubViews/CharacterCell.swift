@@ -10,14 +10,33 @@ private enum Constant {
     static let hSpacing: CGFloat = 15
 }
 
-struct CharacterCell: View {
-    let character: CharacterUI
+extension ListScreen {
+    struct CharacterCell: View {
+        let character: CharacterUI
 
-    var body: some View {
-        VStack {
-            HStack(spacing: Constant.hSpacing) {
+        var body: some View {
+            VStack {
+                HStack(spacing: Constant.hSpacing) {
+                    image
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: Constant.imageSide, height: Constant.imageSide)
+                        .cornerRadius(Constant.cornerRadius)
+
+                    VStack(alignment: .leading) {
+                        Text(character.name)
+                            .textStyle(.cellMain)
+                        Text(character.species)
+                            .textStyle(.cellHeadline)
+                    }
+                }
+            }
+        }
+
+        @ViewBuilder
+        var image: some View {
+            if let imageURL = URL(string: character.image) {
                 AsyncImage(
-                    url: URL(string: character.image)!,
+                    url: imageURL,
                     content: { image in
                         image
                             .resizable()
@@ -27,17 +46,9 @@ struct CharacterCell: View {
                             .resizable()
                     }
                 )
-                .aspectRatio(contentMode: .fill)
-                .frame(width: Constant.imageSide, height: Constant.imageSide)
-                .cornerRadius(Constant.cornerRadius)
-
-                VStack(alignment: .leading) {
-                    Text(character.name)
-                        .font(.title3)
-                        .fontWeight(.light)
-                    Text(character.species)
-                        .font(.headline)
-                }
+            } else {
+                Image("placeholder")
+                    .resizable()
             }
         }
     }
@@ -47,10 +58,14 @@ struct CharacterCell: View {
     NavigationView {
         List {
             ForEach(CharacterUIStubs.pageOneCharacters) { character in
-                CharacterCell(character: character)
+                ListScreen.CharacterCell(character: character)
             }
         }
         .listStyle(.inset)
         .navigationTitle("Characters")
     }
+}
+
+#Preview {
+    ListScreen(viewModel: .init(getCharactersPageUseCase: GetCharactersPageUseCaseStub()))
 }

@@ -5,7 +5,6 @@ import SwiftUI
 
 struct ListScreen: View {
     @State var viewModel: ListScreenViewModel
-    @State var presentedError: ScreenError?
 
     init(viewModel: ListScreenViewModel) {
         _viewModel = State(wrappedValue: viewModel)
@@ -23,7 +22,8 @@ struct ListScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             default:
                 ZStack {
-                    CharactersListView(characters: viewModel.characters, viewModel: viewModel)
+                    CharactersListView()
+                        .environment(viewModel)
 
                     if case .error(let error) = viewModel.state {
                         ErrorView(error: error) {
@@ -40,39 +40,6 @@ struct ListScreen: View {
 }
 
 extension ListScreen {
-    struct CharactersListView: View {
-        private let characters: [CharacterUI]
-        private let viewModel: ListScreenViewModel
-
-        init(characters: [CharacterUI], viewModel: ListScreenViewModel) {
-            self.characters = characters
-            self.viewModel = viewModel
-        }
-
-        var body: some View {
-            NavigationStack {
-                List {
-                    ForEach(characters) { character in
-                        CharacterCell(character: character)
-                            .accessibilityLabel(character.accessibilityLabel)
-                    }
-
-                    if viewModel.canLoadMore, !characters.isEmpty {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
-                        .task {
-                            await viewModel.loadNextPage()
-                        }
-                    }
-                }
-                .navigationTitle("charactersListScreen.navigationTitle")
-            }
-        }
-    }
-
     struct LoaderView: View {
         var body: some View {
             ZStack {
@@ -83,8 +50,6 @@ extension ListScreen {
     }
 }
 
-extension CharacterUI {
-    var accessibilityLabel: String {
-        "\(name), \(status)"
-    }
+#Preview {
+    ListScreen(viewModel: .init(getCharactersPageUseCase: GetCharactersPageUseCaseStub()))
 }
