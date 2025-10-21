@@ -6,6 +6,7 @@ import Foundation
 public struct EpisodeUI: Sendable, Identifiable, Equatable {
     public let id: Int
     public let title: String
+    public let episode: String
     public let characters: [Int]
     public let airDate: String
     public let created: Date
@@ -13,12 +14,14 @@ public struct EpisodeUI: Sendable, Identifiable, Equatable {
     public init(
         id: Int,
         title: String,
+        episode: String,
         characters: [Int],
         airDate: String,
         created: Date
     ) {
         self.id = id
         self.title = title
+        self.episode = episode
         self.characters = characters
         self.airDate = airDate
         self.created = created

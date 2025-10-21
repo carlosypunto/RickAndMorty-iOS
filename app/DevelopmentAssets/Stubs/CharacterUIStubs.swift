@@ -22,6 +22,34 @@ enum CharacterUIStubs {
         created: Date()
     )
 
+    static let anAlien = CharacterUI(
+        id: 6,
+        name: "Abadango Cluster Princess",
+        status: .alive,
+        species: "Alien",
+        type: "",
+        gender: .female,
+        origin: .init(id: 2, name: "Abadango"),
+        location: .init(id: 2, name: "Abadango"),
+        image: "https://rickandmortyapi.com/api/character/avatar/6.jpeg",
+        episodes: [27],
+        created: Date()
+    )
+
+    static let anHumanoid = CharacterUI(
+        id: 21,
+        name: "Abadango Cluster Princess",
+        status: .alive,
+        species: "Humanoid",
+        type: "",
+        gender: .female,
+        origin: .init(id: 0, name: "unknown"),
+        location: .init(id: 3, name: "Citadel of Ricks"),
+        image: "https://rickandmortyapi.com/api/character/avatar/21.jpeg",
+        episodes: [10, 22],
+        created: Date()
+    )
+
     static let pageOneCharacters: [CharacterUI] = [
         rickSanchez,
         CharacterUI(

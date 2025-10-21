@@ -8,6 +8,7 @@ public extension Episode {
         EpisodeUI(
             id: id,
             title: title,
+            episode: episode,
             characters: characters,
             airDate: airDate,
             created: created

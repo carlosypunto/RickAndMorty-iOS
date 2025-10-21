@@ -18,6 +18,7 @@ final class CharactersRouter {
     func makeDestination(route: CharactersRoute) -> some View {
         switch route {
         case .toDetail(let character):
+//            CharacterDetailScreen(character: character)
             CharacterDetailScreenFactory.view(character: character)
         }
     }
