@@ -2,6 +2,7 @@
 //
 
 import SwiftUI
+import UIComponents
 
 extension CharacterDetailScreen {
     struct CharacterDetailView: View {
@@ -9,7 +10,7 @@ extension CharacterDetailScreen {
 
         var body: some View {
             VStack(alignment: .leading) {
-                AsyncImage(
+                AsyncCachedImage(
                     url: URL(string: viewModel.character.image)!,
                     content: { image in
                         image
