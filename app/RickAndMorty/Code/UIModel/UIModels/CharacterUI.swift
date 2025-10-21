@@ -43,6 +43,13 @@ public struct CharacterUI: Sendable, Identifiable, Equatable {
     }
 }
 
+extension CharacterUI: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+    }
+}
+
 public extension CharacterUI {
     enum Gender: String, Sendable, Equatable {
         case female
