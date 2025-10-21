@@ -5,14 +5,17 @@ import SwiftUI
 
 extension ListScreen {
     struct CharactersListView: View {
+        @State private var charactersRouter = CharactersRouter()
         @Environment(ListScreenViewModel.self) private var viewModel
 
         var body: some View {
             NavigationStack {
                 List {
                     ForEach(viewModel.characters) { character in
-                        CharacterCell(character: character)
-                            .accessibilityLabel(character.accessibilityLabel)
+                        NavigationLink(value: CharactersRoute.toDetail(character)) {
+                            CharacterCell(character: character)
+                                .accessibilityLabel(character.accessibilityLabel)
+                        }
                     }
 
                     if viewModel.canLoadMore, !viewModel.characters.isEmpty {
@@ -27,6 +30,11 @@ extension ListScreen {
                     }
                 }
                 .navigationTitle("charactersListScreen.navigationTitle")
+                .environment(charactersRouter)
+                .navigationDestination(
+                    for: CharactersRoute.self,
+                    destination: charactersRouter.makeDestination
+                )
             }
         }
     }
