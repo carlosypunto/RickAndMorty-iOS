@@ -10,6 +10,11 @@ struct CharacterDetailScreenFactory {
         character: CharacterUI,
         container: AppContainer = DefaultContainer()
     ) -> some View {
-        CharacterDetailScreen(viewModel: .init(character: CharacterUIStubs.rickSanchez))
+        CharacterDetailScreen(
+            viewModel: .init(
+                character: character,
+                getEpisodesByIdsUseCase: container.getEpisodesByIds
+            )
+        )
     }
 }

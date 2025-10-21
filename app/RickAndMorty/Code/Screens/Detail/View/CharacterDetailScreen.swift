@@ -11,10 +11,34 @@ struct CharacterDetailScreen: View {
     }
 
     var body: some View {
-        Text(viewModel.character.name)
+        VStack(alignment: .leading) {
+            ScrollView {
+                CharacterDetailView()
+                    .environment(viewModel)
+                    .task {
+                        await viewModel.loadEpisodes()
+                    }
+            }
+        }
+        .navigationBarTitle(viewModel.character.name, displayMode: .inline)
+        .navigationBarColor(backgroundColor: viewModel.character.specieColor)
     }
 }
 
-#Preview {
-    CharacterDetailScreen(viewModel: .init(character: CharacterUIStubs.rickSanchez))
+#Preview("Rick Sanchez (Human)") {
+    NavigationView {
+        CharacterDetailScreen(viewModel: .stub(for: CharacterUIStubs.rickSanchez))
+    }
+}
+
+#Preview("An Alien") {
+    NavigationView {
+        CharacterDetailScreen(viewModel: .stub(for: CharacterUIStubs.anAlien))
+    }
+}
+
+#Preview("An Humanoid") {
+    NavigationView {
+        CharacterDetailScreen(viewModel: .stub(for: CharacterUIStubs.anHumanoid))
+    }
 }

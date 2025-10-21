@@ -7,11 +7,18 @@ import RickAndMortyData
 protocol AppContainer {
     var repository: RickAndMortyRepository { get }
     var getCharactersPage: GetCharactersPageUseCase { get }
+    var getEpisodesByIds: GetEpisodesByIdsUseCase { get }
 }
 
 struct DefaultContainer: AppContainer {
-    let repository: RickAndMortyRepository = RickAndMortyRepositoryImpl()
+    static let repository: RickAndMortyRepository = RickAndMortyRepositoryImpl()
+    var repository: RickAndMortyRepository { Self.repository }
+
     var getCharactersPage: GetCharactersPageUseCase {
-        GetCharactersPageUseCaseImpl(repository: repository)
+        GetCharactersPageUseCaseImpl(repository: Self.repository)
+    }
+
+    var getEpisodesByIds: GetEpisodesByIdsUseCase {
+        GetEpisodesByIdsUseCaseImpl(repository: Self.repository)
     }
 }

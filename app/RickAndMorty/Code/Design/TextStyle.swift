@@ -7,6 +7,8 @@ enum TextStyle {
     case header
     case cellMain
     case cellHeadline
+    case label
+    case regular
 }
 
 extension Text {
@@ -15,6 +17,8 @@ extension Text {
         case .header: self.font(.title2).fontWeight(.bold)
         case .cellMain: self.font(.title3).fontWeight(.light)
         case .cellHeadline: self.font(.headline)
+        case .label: self.font(.caption).fontWeight(.bold)
+        case .regular: self.fontWeight(.none)
         }
     }
 }
