@@ -3,6 +3,7 @@
 
 import SwiftUI
 import RickAndMortyDomain
+import UIComponents
 
 private enum Constant {
     static let imageSide: CGFloat = 50
@@ -16,7 +17,7 @@ struct CharacterCell: View {
     var body: some View {
         VStack {
             HStack(spacing: Constant.hSpacing) {
-                AsyncImage(
+                AsyncCachedImage(
                     url: URL(string: character.image)!,
                     content: { image in
                         image
