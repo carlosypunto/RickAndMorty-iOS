@@ -17,20 +17,10 @@ struct CharacterCell: View {
     var body: some View {
         VStack {
             HStack(spacing: Constant.hSpacing) {
-                AsyncCachedImage(
-                    url: URL(string: character.image)!,
-                    content: { image in
-                        image
-                            .resizable()
-                    },
-                    placeholder: {
-                        Image("placeholder")
-                            .resizable()
-                    }
-                )
-                .aspectRatio(contentMode: .fill)
-                .frame(width: Constant.imageSide, height: Constant.imageSide)
-                .cornerRadius(Constant.cornerRadius)
+                image
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: Constant.imageSide, height: Constant.imageSide)
+                    .cornerRadius(Constant.cornerRadius)
 
                 VStack(alignment: .leading) {
                     Text(character.name)
@@ -40,6 +30,26 @@ struct CharacterCell: View {
                         .font(.headline)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    var image: some View {
+        if let url = URL(string: character.image) {
+            AsyncCachedImage(
+                url: url,
+                content: { image in
+                    image
+                        .resizable()
+                },
+                placeholder: {
+                    Image("placeholder")
+                        .resizable()
+                }
+            )
+        } else {
+            Image("placeholder")
+                .resizable()
         }
     }
 }

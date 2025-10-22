@@ -10,18 +10,8 @@ extension CharacterDetailScreen {
 
         var body: some View {
             VStack(alignment: .leading) {
-                AsyncCachedImage(
-                    url: URL(string: viewModel.character.image)!,
-                    content: { image in
-                        image
-                            .resizable()
-                    },
-                    placeholder: {
-                        Image("placeholder")
-                            .resizable()
-                    }
-                )
-                .aspectRatio(1.0, contentMode: .fit)
+                image
+                    .aspectRatio(1.0, contentMode: .fit)
 
                 CharacteristicsView(character: viewModel.character)
                     .padding(.top)
@@ -40,6 +30,26 @@ extension CharacterDetailScreen {
                 }
 
                 Spacer()
+            }
+        }
+
+        @ViewBuilder
+        var image: some View {
+            if let url = URL(string: viewModel.character.image) {
+                AsyncCachedImage(
+                    url: url,
+                    content: { image in
+                        image
+                            .resizable()
+                    },
+                    placeholder: {
+                        Image("placeholder")
+                            .resizable()
+                    }
+                )
+            } else {
+                Image("placeholder")
+                    .resizable()
             }
         }
     }
