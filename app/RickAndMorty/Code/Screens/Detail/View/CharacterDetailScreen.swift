@@ -4,7 +4,7 @@
 import SwiftUI
 
 struct CharacterDetailScreen: View {
-    @State var viewModel: CharacterDetailScreenViewModel
+    @State private var viewModel: CharacterDetailScreenViewModel
 
     init(viewModel: CharacterDetailScreenViewModel) {
         _viewModel = State(wrappedValue: viewModel)

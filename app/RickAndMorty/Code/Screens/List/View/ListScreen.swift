@@ -4,7 +4,7 @@
 import SwiftUI
 
 struct ListScreen: View {
-    @State var viewModel: ListScreenViewModel
+    @State private var viewModel: ListScreenViewModel
 
     init(viewModel: ListScreenViewModel) {
         _viewModel = State(wrappedValue: viewModel)
